@@ -14,6 +14,7 @@ Open http://127.0.0.1:8000/docs in a browser for an auto-generated test page.
 
 from typing import List
 from fastapi import FastAPI
+from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
 
 from predict_core import predict_one, predict_many
@@ -30,6 +31,12 @@ class Student(BaseModel):
     projects: int
     aptitude: float
     soft_skills: int
+
+
+@app.get("/", include_in_schema=False)
+def root():
+    """Send browsers hitting the bare URL to the interactive docs."""
+    return RedirectResponse(url="/docs")
 
 
 @app.get("/health")
